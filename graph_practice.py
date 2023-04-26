@@ -27,6 +27,7 @@ def find_shortest_path(graph, start, end, path=[]):
         if new_path:
             if not shortest or len(new_path) < len(shortest):
                 shortest = new_path
+        
         return shortest
 
 
