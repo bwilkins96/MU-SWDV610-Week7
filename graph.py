@@ -109,26 +109,24 @@ class Graph:
                         next_level.append(other_vert)
             
             level = next_level
+        
+        return visited  
 
-    def BFS2(self, start_vert, visited=None):
-        if visited == None:
-            visited = {start_vert: None}
+    def get_path(self, origin, dest, visited):
+        path = []
+        if dest in visited:
+            path.append(dest)
 
-        level = [start_vert]
-        while len(level) > 0:
-            next_level = []
-
-            for vert in level:
-                yield vert
-                
-                for edge in self.incident_edges(vert):
-                    other_vert = edge.opposite(vert)
-
-                    if other_vert not in visited:
-                        visited[other_vert] = edge
-                        next_level.append(other_vert)
+            current = dest
+            while current is not origin:
+                edge = visited[current]
+                parent = edge.opposite(current)
+                path.append(parent)
+                current = parent
             
-            level = next_level
+            path.reverse()
+
+        return path
 
 
 if __name__ == '__main__':
@@ -150,12 +148,9 @@ if __name__ == '__main__':
     for points in edge_points:
         test.insert_edge(points[0], points[1])
 
-    visited = {a: None}
-    test.BFS(a, visited)
-    
-    #for vert in test.BFS2(a, visited):
-    #    print(vert.element())
+    visited = test.BFS(a, {a: None})
+    print(test.get_path(a, i, visited))  # -> [< a >, < d >, < h >, < i >]
+    print(test.get_path(a, e, visited))  # -> [< a >, < e >]
 
-    print(visited)
 
 
