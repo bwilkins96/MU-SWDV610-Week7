@@ -127,6 +127,11 @@ class Graph:
             path.reverse()
 
         return path
+    
+    def get_shortest_path(self, origin, dest):
+        visited = self.BFS(origin, {origin: None})
+        shortest = self.get_path(origin, dest, visited)
+        return shortest
 
 
 if __name__ == '__main__':
@@ -151,6 +156,9 @@ if __name__ == '__main__':
     visited = test.BFS(a, {a: None})
     print(test.get_path(a, i, visited))  # -> [< a >, < d >, < h >, < i >]
     print(test.get_path(a, e, visited))  # -> [< a >, < e >]
+    print()
+    print(test.get_shortest_path(a, i))  # -> [< a >, < d >, < h >, < i >]
+    print(test.get_shortest_path(a, e))  # -> [< a >, < e >]
 
 
 
