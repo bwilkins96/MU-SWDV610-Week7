@@ -9,13 +9,14 @@ def valid_combo(tup):
     return tup[0] >= tup[1]
 
 def valid_move(tup1, tup2):
-    if tup1[0] == tup2[0] and tup1[1] == tup2[1]:
-        return False
-    
     if tup1[2] == tup2[2]:
         return False
+    
+    change = abs(tup1[0] - tup2[0]) + abs(tup1[1] - tup2[1])
+    if change > 0 and change <= 2:
+        return True
 
-    return True
+    return False
 
 def build_mc_graph():
     mc_graph = Graph()
@@ -42,9 +43,9 @@ def build_mc_graph():
 def main():
     mc_graph = build_mc_graph()
     start_pos = mc_graph.get_vertex((3, 3, 'r'))
+    end_pos = mc_graph.get_vertex((3, 3, 'l'))
 
-    #print(mc_graph.vertices())
-    #print()
-    print(len(mc_graph.edges()))
+    shortest = mc_graph.get_shortest_path(start_pos, end_pos)
+    print(shortest)
 
 if __name__ == '__main__': main()
