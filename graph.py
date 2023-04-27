@@ -77,3 +77,21 @@ class Graph:
 
         self._outgoing[origin][dest] = edge
         self._incoming[dest][origin] = edge
+
+    def BFS(self, start_vert):
+        visited = {}
+
+        level = [start_vert]
+        while len(level) > 0:
+            next_level = []
+
+            for vert in level:
+                for edge in self.incident_edges(vert):
+                    other_vert = edge.opposite(vert)
+
+                    if other_vert not in visited:
+                        visited[other_vert] = edge 
+                        next_level.append(other_vert)
+            
+            level = next_level
+
