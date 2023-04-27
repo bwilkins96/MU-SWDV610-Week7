@@ -95,7 +95,9 @@ class Graph:
 
         return edge
 
-    def BFS(self, start_vert, visited):
+    def BFS(self, start_vert):
+        visited = {start_vert: None}
+
         level = [start_vert]
         while len(level) > 0:
             next_level = []
@@ -129,7 +131,7 @@ class Graph:
         return path
     
     def get_shortest_path(self, origin, dest):
-        visited = self.BFS(origin, {origin: None})
+        visited = self.BFS(origin)
         shortest = self.get_path(origin, dest, visited)
         return shortest
 
@@ -153,12 +155,12 @@ if __name__ == '__main__':
     for points in edge_points:
         test.insert_edge(points[0], points[1])
 
-    visited = test.BFS(a, {a: None})
+    visited = test.BFS(a)
     print(test.get_path(a, i, visited))  # -> [< a >, < d >, < h >, < i >]
     print(test.get_path(a, e, visited))  # -> [< a >, < e >]
     print()
     print(test.get_shortest_path(a, i))  # -> [< a >, < d >, < h >, < i >]
     print(test.get_shortest_path(a, e))  # -> [< a >, < e >]
-
+    print(test.get_shortest_path(f, d))  # -> [< f >, < h >, <d>]
 
 
