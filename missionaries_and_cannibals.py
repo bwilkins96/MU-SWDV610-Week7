@@ -59,37 +59,30 @@ def build_mc_graph():
 
     return mc_graph
 
-def unpack_mc_vertex(vert):
-    data = vert.element()
-    side = 'left' if data[2] == 'l' else 'right'
-    return (data[0], data[1], side)
-
 def print_mc_solution(path):
+    header =  "This shows a solution to the missionaries and cannibals problem."
+    header2 = "\nMoving individuals from the starting shore, marked by an '*', "
+    header3 = "\nto the opposite shore, so that the opposite shore's population" 
+    header4 = f"\nmatches what is shown, will solve the problem in {len(path)-1} moves!"
+    print(header, header2, header3, header4, '\n'+('-'*len(header)))
+
     for i in range(len(path)-1):
         bank1_m, bank1_c, bank1_s = path[i].element()
         bank2_m, bank2_c, bank2_s = path[i+1].element()
         
         move_str = '{} missionaries, {} cannibals  {}  {} missionaries, {} cannibals'
         if bank1_s == 'l':
-            move_str = '\n\n*L  |  ' + move_str.format(bank1_m, bank1_c, '>>----->', bank2_m, bank2_c) + '  |  R '
+            move_str = '\n*L  |  ' + move_str.format(bank1_m, bank1_c, '>>----->', bank2_m, bank2_c) + '  |  R '
         else:
-            move_str = '\n\n L  |  ' + move_str.format(bank2_m, bank2_c, '<-----<<', bank1_m, bank1_c) + '  |  R*'
+            move_str = '\n L  |  ' + move_str.format(bank2_m, bank2_c, '<-----<<', bank1_m, bank1_c) + '  |  R*'
 
-        print(move_str)
-    print('\n')
+        print(f'\nMove {i+1}', move_str)
+    print()
 
 def main():
     mc_graph = build_mc_graph()
     start_pos = mc_graph.get_vertex((3, 3, 'r'))
     end_pos = mc_graph.get_vertex((3, 3, 'l'))
-
-    # print()
-    # print(mc_graph.vertices())
-    # print('len:', len(mc_graph.vertices()))
-    # print()
-    # print(mc_graph.edges())
-    # print('len', len(mc_graph.edges()))
-    # print()
 
     shortest = mc_graph.get_shortest_path(start_pos, end_pos)
     print_mc_solution(shortest)
