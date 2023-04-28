@@ -14,15 +14,6 @@ def get_change(tup_before, tup_after):
     cann_change = abs(tup_after[1] - tup_before[1])
     return (miss_change, cann_change, miss_change+cann_change)
 
-def print_banks(t1, t2):
-    print(t1, '------', t2)
-
-def print_move(t1, t2):
-    print('\n')
-    print('-----------------------------------------------')
-    print(t1, '<------>', t2)
-    print('-----------------------------------------------')
-
 def valid_combo(tup):
     return (tup[0] >= tup[1]) or (tup[0] == 0)
 
@@ -53,19 +44,6 @@ def valid_move(tup1_before, tup2_after):
         print('inconsistency! 3\n')
         return False
 
-
-
-
-    # print_move(tup1_before, tup2_after)
-    # print('before:')
-    # print_banks(tup1_before, tup2_before)
-    # print('after:')
-    # print_banks(tup1_after, tup2_after)
-    # print('\nchange:', t1_t_change, t2_t_change)
-    # print('missionary change:', t1_m_change, t2_m_change)
-    # print('cannibal change:', t1_c_change, t2_c_change)
-
-    # print('true')
     return True
 
 def build_mc_graph():
