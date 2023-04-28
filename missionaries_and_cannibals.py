@@ -1,9 +1,8 @@
 # SWDV 610: Data Structures and Algorithms
 # Graph based solution to the missionaries and cannibals problem
+# River bank status is stored in tuple form: (num_missionaries, num_cannibals, bank_side)
 
 from graph import Graph
-
-# (M, C, B)
 
 def get_opposite(tup):
     side = 'l' if tup[2] == 'r' else 'r'
@@ -12,7 +11,7 @@ def get_opposite(tup):
 def get_change(tup_before, tup_after):
     miss_change = abs(tup_after[0] - tup_before[0])
     cann_change = abs(tup_after[1] - tup_before[1])
-    return (miss_change, cann_change, miss_change+cann_change)
+    return miss_change + cann_change
 
 def valid_combo(tup):
     return (tup[0] >= tup[1]) or (tup[0] == 0)
@@ -31,17 +30,8 @@ def valid_move(tup1_before, tup2_after):
     if not valid_combo(tup2_before) or not valid_combo(tup1_after):
         return False
     
-    t1_m_change, t1_c_change, t1_t_change = get_change(tup1_before, tup1_after)
-    t2_m_change, t2_c_change, t2_t_change = get_change(tup2_before, tup2_after)
-
-    if t1_t_change != t2_t_change:
-        print('inconsistency! 1\n')
-        return False
-    elif t1_t_change <= 0 or t1_t_change > 2:
-        print('inconsistency! 2\n')
-        return False
-    elif (t1_m_change != t2_m_change) or (t1_c_change != t2_c_change):
-        print('inconsistency! 3\n')
+    total_change = get_change(tup1_before, tup1_after)
+    if total_change <= 0 or total_change > 2:
         return False
 
     return True
@@ -79,8 +69,8 @@ def main():
     # print('len:', len(mc_graph.vertices()))
     # print()
     # print(mc_graph.edges())
-    print('len', len(mc_graph.edges()))
-    print()
+    # print('len', len(mc_graph.edges()))
+    # print()
 
     shortest = mc_graph.get_shortest_path(start_pos, end_pos)
     print(shortest)
