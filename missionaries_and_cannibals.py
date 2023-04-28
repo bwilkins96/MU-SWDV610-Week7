@@ -1,42 +1,51 @@
 # SWDV 610: Data Structures and Algorithms
 # Graph based solution to the missionaries and cannibals problem
-# River bank status is stored in tuple form: (num_missionaries, num_cannibals, bank_side)
+# River bank status is stored in tuple form: (num_missionaries, num_cannibals, river_side)
 
 from graph import Graph
 
 def get_opposite(tup):
+    """Returns the opposite river side's values"""
     side = 'l' if tup[2] == 'r' else 'r'
     return (3-tup[0], 3-tup[1], side)
 
 def get_change(tup_before, tup_after):
+    """Returns the population change of a river's side"""
     miss_change = abs(tup_after[0] - tup_before[0])
     cann_change = abs(tup_after[1] - tup_before[1])
     return miss_change + cann_change
 
 def valid_combo(tup):
+    """Returns whether tup contains values that obey the cannibals constraint"""
     return (tup[0] >= tup[1]) or (tup[0] == 0)
 
 def valid_move(tup1_before, tup2_after):
+    """Returns whether a move from tup1_before to tup2_after is valid"""
     if tup1_before[2] == tup2_after[2]:
+        # Side is the same
         return False
     
     total = tup1_before[0] + tup1_before[1] + tup2_after[0] + tup2_after[1]
     if total != 7 and total != 8:
+        # Should be 6 original + 1 new or 6 original + 2 new when summing population values
         return False
     
     tup2_before = get_opposite(tup1_before)
     tup1_after = get_opposite(tup2_after)
 
     if not valid_combo(tup2_before) or not valid_combo(tup1_after):
+        # Violates the cannibals constraint
         return False
     
     total_change = get_change(tup1_before, tup1_after)
     if total_change <= 0 or total_change > 2:
+        # Either no movement or too much movement
         return False
 
     return True
 
 def build_mc_graph():
+    """Returns a graph modelling the possible positions and moves of the m/c problem"""
     mc_graph = Graph()
 
     # Generate possible vertices
@@ -60,12 +69,15 @@ def build_mc_graph():
     return mc_graph
 
 def print_mc_solution(path):
+    """Formats and prints info about the solution path for the m/c problem"""
+
     header =  "This shows a solution to the missionaries and cannibals problem."
     header2 = "\nMoving individuals from the starting shore, marked by an '*', "
     header3 = "\nto the opposite shore, so that the opposite shore's population" 
     header4 = f"\nmatches what is shown, will solve the problem in {len(path)-1} moves!"
     print(header, header2, header3, header4, '\n'+('-'*len(header)))
 
+    # Prints info about each move
     for i in range(len(path)-1):
         bank1_m, bank1_c, bank1_s = path[i].element()
         bank2_m, bank2_c, bank2_s = path[i+1].element()
