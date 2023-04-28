@@ -59,6 +59,25 @@ def build_mc_graph():
 
     return mc_graph
 
+def unpack_mc_vertex(vert):
+    data = vert.element()
+    side = 'left' if data[2] == 'l' else 'right'
+    return (data[0], data[1], side)
+
+def print_mc_solution(path):
+    for i in range(len(path)-1):
+        bank1_m, bank1_c, bank1_s = path[i].element()
+        bank2_m, bank2_c, bank2_s = path[i+1].element()
+        
+        move_str = '{} missionaries, {} cannibals  {}  {} missionaries, {} cannibals'
+        if bank1_s == 'l':
+            move_str = '\n\n*L  |  ' + move_str.format(bank1_m, bank1_c, '>>----->', bank2_m, bank2_c) + '  |  R '
+        else:
+            move_str = '\n\n L  |  ' + move_str.format(bank2_m, bank2_c, '<-----<<', bank1_m, bank1_c) + '  |  R*'
+
+        print(move_str)
+    print('\n')
+
 def main():
     mc_graph = build_mc_graph()
     start_pos = mc_graph.get_vertex((3, 3, 'r'))
@@ -73,6 +92,6 @@ def main():
     # print()
 
     shortest = mc_graph.get_shortest_path(start_pos, end_pos)
-    print(shortest)
+    print_mc_solution(shortest)
 
 if __name__ == '__main__': main()
